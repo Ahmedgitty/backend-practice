@@ -4,7 +4,13 @@ const PORT = 8081;
 app.get("/", (req, res) => {
     res.send("Backend running...");
 });
-
+/* express() → creates server
+app.get() → route
+/ → endpoint
+req → incoming request
+res → outgoing response
+listen() → start server 
+*/ 
 app.listen(PORT,() =>{
   console.log(`Server is running on port ${PORT}`);
 });
