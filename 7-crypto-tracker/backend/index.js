@@ -3,6 +3,10 @@ require('dotenv').config(); // Loads variables from .env
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const userRoutes = require('./routes/userRoutes');
+const portfolioRoutes = require('./routes/portfolioRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
+const coinRoutes = require('./routes/coinRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 8082;
@@ -11,6 +15,11 @@ const PORT = process.env.PORT || 8082;
 app.use(cors()); // Allow cross-origin requests from your frontend
 app.use(express.json()); // Parse JSON request bodies
 
+//Routes
+app.use('/api/users', userRoutes);
+app.use('/api/portfolios', portfolioRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/coins', coinRoutes);
 app.get('/health', (req,res) => {
     res.status(200).json({
         status: "OK",
