@@ -4,13 +4,24 @@ const pool = require('../config/db');
 exports.createPortfolio = async (req, res) => {
   const {user_id, name, base_currency} = req.body;  
 
-    try {
-        const result = await pool.query(
+  //modified a bit so that its not necessary to send basecurrency to access protected route and match init.sql table.
+    try { 
+        let result;
+        if(base_currency){
+         result = await pool.query(
             `INSERT INTO portfolios (user_id, name, base_currency)
             VALUES ($1, $2, $3)
             RETURNING *`,
             [user_id, name, base_currency]
         );
+    } else {
+        result = await pool.query(
+            `INSERT INTO portfolios (user_id, name)
+            VALUES ($1, $2)
+            RETURNING *`,
+            [user_id, name]
+        );
+    }    
         res.status(201).json(result.rows[0]);
     } catch (err) {
         res.status(500).json({error: err.message});

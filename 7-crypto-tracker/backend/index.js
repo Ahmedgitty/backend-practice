@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const coinRoutes = require('./routes/coinRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 8082;
@@ -20,6 +21,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/portfolios', portfolioRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/coins', coinRoutes);
+app.use('/api/auth', authRoutes);
+
 app.get('/health', (req,res) => {
     res.status(200).json({
         status: "OK",
