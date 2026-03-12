@@ -45,10 +45,47 @@ app.get("/api/crypto", async (req, res) => {
         },
       },
     );
+    
+    // Attempt to silently cache these to our DB so we always have recent prices
+    try {
+      const pool = require('./config/db');
+      for (let coin of response.data) {
+        await pool.query(
+          `INSERT INTO coins (name, symbol, image, coin_id, current_price, price_change_percentage_24h)
+           VALUES ($1, $2, $3, $4, $5, $6)
+           ON CONFLICT (coin_id) DO UPDATE SET 
+             current_price = EXCLUDED.current_price,
+             price_change_percentage_24h = EXCLUDED.price_change_percentage_24h,
+             last_updated = CURRENT_TIMESTAMP`,
+          [coin.name, coin.symbol, coin.image, coin.id, coin.current_price, coin.price_change_percentage_24h]
+        );
+      }
+    } catch (dbErr) {
+      console.log("Silent DB cache update failed:", dbErr.message);
+    }
+
     res.status(200).json(response.data);
   } catch (error) {
-    console.log("Error fetching data from CoinGecko:", error.message);
-    res.status(500).json({ error: "Failed to fetch crypto data" });
+    console.log("CoinGecko API Error:", error.message);
+    
+    // FALLBACK: If CoinGecko rate limits (429), fetch latest data from our DB
+    try {
+      const pool = require('./config/db');
+      const dbResult = await pool.query(
+        `SELECT coin_id as id, name, symbol, image, current_price, price_change_percentage_24h 
+         FROM coins 
+         ORDER BY current_price DESC LIMIT 10`
+      );
+      
+      if (dbResult.rows.length > 0) {
+        console.log("Serving cached data from database due to rate limit.");
+        return res.status(200).json(dbResult.rows);
+      }
+    } catch (fallbackErr) {
+      console.log("Database fallback error:", fallbackErr.message);
+    }
+
+    res.status(500).json({ error: "Failed to fetch crypto data from all sources" });
   }
 });
 

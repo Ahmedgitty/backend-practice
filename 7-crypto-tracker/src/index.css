@@ -541,3 +541,203 @@ a:hover { color: var(--green-bright); text-shadow: var(--glow-sm); }
 .coin-card:nth-child(8)  { animation-delay: 0.40s; }
 .coin-card:nth-child(9)  { animation-delay: 0.45s; }
 .coin-card:nth-child(10) { animation-delay: 0.50s; }
+
+/* ─── Additions for Portfolio & Trade Modal ──────────────── */
+
+/* Trade Button on Coin Card */
+.trade-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--green-neon);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.trade-btn:hover {
+  background: var(--green-faint);
+  border-color: var(--green-neon);
+  box-shadow: var(--glow-sm);
+}
+
+/* Portfolio Selector */
+.portfolio-selector { margin-top: 1rem; }
+.portfolio-dropdown {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--green-neon);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  width: 250px;
+}
+.portfolio-dropdown option { background: var(--bg-primary); }
+
+.create-portfolio-btn {
+  background: transparent;
+  color: var(--green-neon);
+  border: 1px dashed var(--border);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.create-portfolio-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.portfolio-input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--green-neon);
+  width: 200px;
+}
+.confirm-btn { border: 1px solid var(--green-bright); background: var(--green-muted); color: var(--green-bright); padding: 0.5rem 0.75rem; }
+.confirm-btn:hover { box-shadow: var(--glow-sm); }
+.cancel-btn { border: 1px solid var(--red-neon); color: var(--red-neon); padding: 0.5rem 0.75rem; }
+.cancel-btn:hover { background: var(--red-muted); }
+.add-new-btn { margin-left: 0.5rem; padding: 0.5rem 0.75rem; border-style: solid; font-weight: bold; }
+
+/* Portfolio Summary */
+.portfolio-summary {
+  background: rgba(0, 255, 65, 0.02);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .portfolio-summary { flex-direction: row; align-items: flex-start; }
+}
+
+.portfolio-total h3 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.portfolio-total h2 {
+  font-size: 2.5rem;
+  color: var(--green-bright);
+  text-shadow: var(--glow-md);
+  margin-right: 2rem;
+}
+
+.holdings-list { flex: 1; }
+.holdings-list h4 {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.holdings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.holding-item {
+  display: flex;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  border-radius: 4px;
+  gap: 0.75rem;
+}
+.holding-icon { width: 24px; height: 24px; border-radius: 50%; }
+.holding-info { display: flex; flex-direction: column; flex: 1; }
+.holding-name { font-size: 0.85rem; font-weight: 600; }
+.holding-qty { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+.holding-value { font-family: var(--font-mono); font-size: 0.9rem; color: var(--green-neon); }
+
+.empty-holdings { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); }
+
+/* Modal Overlay & Content */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-content {
+  width: 90%;
+  max-width: 450px;
+}
+h2.modal-title { margin-bottom: 0.2rem; }
+.highlight-price { color: var(--green-neon); font-size: 1rem; }
+
+/* Trade Form Specifics */
+.trade-type-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.type-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.type-btn.active.buy { background: var(--green-muted); border-color: var(--green-neon); color: var(--green-neon); box-shadow: var(--glow-sm); }
+.type-btn.active.sell { background: var(--red-muted); border-color: var(--red-neon); color: var(--red-neon); box-shadow: 0 0 10px rgba(255,51,51,0.2); }
+
+.trade-input { font-size: 1.2rem; }
+.trade-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+.summary-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+.summary-value { font-family: var(--font-mono); font-size: 1.1rem; color: var(--green-neon); }
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.cancel-btn { background: transparent; border-color: var(--text-muted); color: var(--text-muted); }
+.cancel-btn:hover { border-color: var(--text-primary); color: var(--text-primary); box-shadow: none; }
+.buy-btn:hover { box-shadow: var(--glow-md); }
+.sell-btn { border-color: var(--red-neon); color: var(--red-neon); }
+.sell-btn:hover { background: rgba(255,51,51,0.15); box-shadow: 0 0 15px rgba(255,51,51,0.4); }
+.sell-btn::before { background: rgba(255,51,51,0.2); }

@@ -40,3 +40,19 @@ exports.getUserPortfolio = async (req, res) => {
         res.status(500).json({error: err.message});
     }
 };
+
+// GET PORTFOLIO HOLDINGS
+exports.getPortfolioHoldings = async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT h.portfolio_id, h.coin_id, h.total_quantity, c.name, c.symbol, c.image, c.current_price, c.price_change_percentage_24h
+             FROM holdings h
+             JOIN coins c ON h.coin_id = c.id
+             WHERE h.portfolio_id = $1`,
+            [req.params.portfolioId]
+        );
+        res.status(200).json(result.rows);
+    } catch(err) {
+        res.status(500).json({error: err.message});
+    }
+};

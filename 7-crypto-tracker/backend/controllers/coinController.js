@@ -51,6 +51,16 @@ exports.fetchAndSaveCoin = async (req, res) => {
         res.status(200).json(result.rows[0]);
 
     } catch (err) {
+        // FALLBACK: If CoinGecko rate limits us, check if we already have it in DB
+        try {
+            const result = await pool.query(`SELECT * FROM coins WHERE coin_id = $1`, [coinId]);
+            if (result.rows.length > 0) {
+                return res.status(200).json(result.rows[0]);
+            }
+        } catch (dbErr) {
+            console.error("DB Fallback error:", dbErr.message);
+        }
+
         res.status(500).json({ error: err.message });
     }
 };
