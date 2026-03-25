@@ -13,7 +13,21 @@ const app = express();
 const PORT = process.env.PORT || 8082;
 
 // Middleware
-app.use(cors()); // Allow cross-origin requests from your frontend
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://7-crypto-tracker.vercel.app'
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+})); // Allow cross-origin requests from your frontend
 app.use(express.json()); // Parse JSON request bodies
 
 //Routes

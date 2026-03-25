@@ -44,7 +44,8 @@ function Signup() {
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8081/api/auth/register", {
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),

@@ -78,7 +78,8 @@ function Dashboard() {
 
   const fetchCryptoData = (controller) => {
     setError(null);
-    fetch("http://localhost:8081/api/crypto", { signal: controller.signal })
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+    fetch(`${API_URL}/api/crypto`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -103,7 +104,8 @@ function Dashboard() {
     try{
       if(!user || !token) return;
 
-      const res = await fetch(`http://localhost:8081/api/portfolios/user/${user.id}`, {
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+      const res = await fetch(`${API_URL}/api/portfolios/user/${user.id}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -125,7 +127,8 @@ function Dashboard() {
   const fetchHoldings = async (portfolioId) => {
     if(!portfolioId) return;
     try {
-      const res = await fetch(`http://localhost:8081/api/portfolios/${portfolioId}/holdings`);
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+      const res = await fetch(`${API_URL}/api/portfolios/${portfolioId}/holdings`);
       if(!res.ok) throw new Error("Failed to fetch holdings");
       const data = await res.json();
       setHoldings(data);
@@ -141,12 +144,13 @@ function Dashboard() {
 
     try {
       // 1. Fetch from CoinGecko to make sure it exists in DB / is updated
-      const saveRes = await fetch(`http://localhost:8081/api/coins/${tradeModalCoin.id}`, { method: 'POST' });
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+      const saveRes = await fetch(`${API_URL}/api/coins/${tradeModalCoin.id}`, { method: 'POST' });
       if(!saveRes.ok) throw new Error("Failed to sync coin data to database.");
       const savedCoin = await saveRes.json();
 
       // 2. Perform the transaction
-      const txRes = await fetch('http://localhost:8081/api/transactions', {
+      const txRes = await fetch(`${API_URL}/api/transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -208,7 +212,8 @@ function Dashboard() {
     try {
       if (!user || !token) throw new Error("Not logged in");
 
-      const res = await fetch("http://localhost:8081/api/portfolios", {
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+      const res = await fetch(`${API_URL}/api/portfolios`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
