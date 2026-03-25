@@ -23,8 +23,7 @@ exports.createTransaction = async (req, res) => {
     );
 
     const newTransaction = transactionResult.rows[0];
-
-    // 2. Update holdings table
+          
     // For a BUY, we add to holdings. For a SELL, we subtract.
     let qtyChange = parseFloat(quantity);
     if (type === 'SELL') {
